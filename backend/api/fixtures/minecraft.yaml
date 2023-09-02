@@ -1,0 +1,5 @@
+- model: api.Minecraft
+  pk: 1
+  fields:
+    version: 1.2.5
+    hash: 8e8778078a175a33603a585257f28563

@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgres:14-alpine
+    command: ["postgres", "-c", "log_statement=all"]
+    ports:
+      - "127.0.0.1:7432:5432"
+    volumes:
+      - "./backend:/app"
+    environment:
+      - "POSTGRES_DB=launcherapi"
+      - "POSTGRES_USER=launcherapi"
+      - "POSTGRES_PASSWORD=launcherapi"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U launcherapi"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/dev/Dockerfile
+      args:
+        - "UID=${UID:-1000}"
+        - "GID=${GID:-1000}"
+    volumes:
+      - "./backend:/app"
+      - "./storage/backend:/storage"
+    command: [ "bash", "-c", "python manage.py runserver --nothreading 0.0.0.0:8000" ]
+    user: "${UID:-1000}:${GID:-1000}"
+    ports:
+      - "127.0.0.1:2459:8000"
+      - "127.0.0.1:5689:5678"
+    depends_on:
+      db:
+        condition: service_healthy
