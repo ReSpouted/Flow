@@ -1,5 +1,5 @@
-# launcherapi
-This is the API used by the legacy launcher. Later it will probably be updated to be used with the newer launcher too if it needs one too
+# Flow
+Flow is the API used by the [Respouted Legacy](https://github.com/ReSpouted/Respouted-LegacyLauncher).
 
 ## Running locally
 ```
